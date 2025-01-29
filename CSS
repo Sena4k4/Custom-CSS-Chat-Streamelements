@@ -35,7 +35,10 @@ body { background:none !important; line-height: 1.5em; }
 
 #log ul { list-style-type: none; padding-left: 0; } /* Remove bullet points */
 
-#log li { margin-bottom: 55px; } /* Add bottom margin to list items */
+#log li { 
+  margin-bottom: 55px; /* Add bottom margin to list items */
+  transition: transform 0.5s ease-in-out; /* Smooth transition for sliding up */
+}
 
 /* ===== ANIMATIONS ===== */
 @keyframes slideInOut {
