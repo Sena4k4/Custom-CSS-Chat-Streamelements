@@ -1,0 +1,19 @@
+{
+  "fields": [
+    {
+      "name": "username",
+      "type": "string",
+      "description": "The username of the chat message sender"
+    },
+    {
+      "name": "message",
+      "type": "string",
+      "description": "The content of the chat message"
+    },
+    {
+      "name": "timestamp",
+      "type": "string",
+      "description": "The timestamp of the chat message"
+    }
+  ]
+}
