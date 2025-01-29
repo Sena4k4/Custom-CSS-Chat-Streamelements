@@ -13,37 +13,70 @@
     </div>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            var chat = document.querySelector("#chat");
+            const chat = document.querySelector("#chat");
             const maxMessages = 4;
 
-            ComfyJS.onChat = (user, message, flags, self, extra) => {
-                // Check if there are already maxMessages
-                if (chat.children.length >= maxMessages) {
-                    // Slide out the oldest message
-                    chat.children[0].style.animation = "slideOutFast 2s ease-in-out forwards";
-                    setTimeout(() => {
-                        chat.children[0].remove();
-                    }, 2000); // Remove the message after the slide-out animation
+            // Helper function to replace emote codes with image tags
+            function replaceEmotes(message, emotes) {
+                if (!emotes) return message;
+
+                const emotePatterns = {};
+                for (let emote in emotes) {
+                    emotes[emote].forEach(pos => {
+                        const [start, end] = pos.split('-').map(Number);
+                        const emoteCode = message.slice(start, end + 1);
+                        emotePatterns[emoteCode] = `<img src="https://static-cdn.jtvnw.net/emoticons/v2/${emote}/default/dark/3.0" alt="${emoteCode}" style="height: 60px; width: 60px;">`; // Even larger size
+                    });
                 }
 
+                return message.replace(/(\S+)/g, word => emotePatterns[word] || word);
+            }
+
+            // Function to reposition messages
+            function repositionMessages() {
+                const messages = chat.children;
+                for (let i = 0; i < messages.length; i++) {
+                    messages[i].style.transform = `translateY(${i * 60}px)`; // Adjust the transform to account for the height of messages
+                }
+            }
+
+            ComfyJS.onChat = (user, message, flags, self, extra) => {
+                const emoteMessage = replaceEmotes(message, extra.messageEmotes);
+
                 // Create a new chat message element
-                var newMessage = document.createElement("li");
+                const newMessage = document.createElement("li");
                 newMessage.classList.add('message');
                 newMessage.innerHTML = `
                     <div class="meta">
                         <span class="name">${user}</span>
                     </div>
                     <div class="container-message">
-                        ${message}
+                        ${emoteMessage}
                     </div>`;
                 chat.append(newMessage);
 
                 // Add an event listener to remove the message after the animation ends
-                newMessage.addEventListener('animationend', () => {
-                    if (newMessage.style.animationName === 'slideInOut') {
+                newMessage.addEventListener('animationend', (event) => {
+                    if (event.animationName === 'slideInOut') {
                         newMessage.remove();
+                        repositionMessages(); // Reposition remaining messages
                     }
                 });
+
+                repositionMessages(); // Reposition messages when a new message is added
+
+                // Check if there are already maxMessages
+                if (chat.children.length > maxMessages) {
+                    // Slide out the oldest message
+                    const oldestMessage = chat.children[0];
+                    oldestMessage.style.animation = "slideOutFast 2s ease-in-out forwards";
+                    oldestMessage.addEventListener('animationend', (event) => {
+                        if (event.animationName === 'slideOutFast') {
+                            oldestMessage.remove();
+                            repositionMessages(); // Reposition remaining messages
+                        }
+                    });
+                }
             };
 
             ComfyJS.Init("sena_ink");
