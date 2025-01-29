@@ -37,6 +37,13 @@
                         ${message}
                     </div>`;
                 chat.append(newMessage);
+
+                // Add an event listener to remove the message after the animation ends
+                newMessage.addEventListener('animationend', () => {
+                    if (newMessage.style.animationName === 'slideInOut') {
+                        newMessage.remove();
+                    }
+                });
             };
 
             ComfyJS.Init("sena_ink");
@@ -44,4 +51,3 @@
     </script>
 </body>
 </html>
-
