@@ -15,27 +15,69 @@ body { background:none !important; line-height: 1.5em; }
   bottom: 0; left: 0; background: rgb(17,11,44);
   background: linear-gradient(180deg, rgba(17,11,44,0) 0%, rgba(17,11,44,1) 100%); z-index: 2; }
 
-#log>div { position: relative; padding-top: 22px; margin-bottom: 10px; }
+#log>div { position: relative; padding-top: 30px; margin-bottom: 30px; }
 
 .badge { display: none !important; }
 .colon { display: none; }
 .action { font-style: bold; }
 
-#log { vertical-align: middle; box-sizing: border-box; width: 100%; bottom: 0; left: 0; padding: 0 10px 10px; }
+#log { 
+  vertical-align: middle; 
+  box-sizing: border-box; 
+  width: 100%; 
+  bottom: 0; 
+  left: 0; 
+  padding: 0 10px 10px; 
+  margin-top: 35px; /* Add top margin */
+  margin-bottom: 30px; /* Add bottom margin */
+}
 #log>div.deleted { visibility: hidden; }
 
 #log ul { list-style-type: none; padding-left: 0; } /* Remove bullet points */
 
+#log li { margin-bottom: 55px; } /* Add bottom margin to list items */
+
+/* ===== ANIMATIONS ===== */
+@keyframes slideInOut {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  3% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  97% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes slideOutFast {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
 /* ===== USERNAME ===== */
 #log .meta {
   display: block;
-  padding: 3px 6px; /* Smaller padding */
+  padding: 8px 11px; /* Increase padding by 5px */
   line-height: 15px;
   border: 2px solid #512375;
   border-radius: 8px;
   z-index: 2;
   font-family: Lemon;
-  font-size: 14px; /* Half the previous size */
+  font-size: 22px; /* Increase font size by 5px */
   font-weight: 500;
   background-color: #512375;
   color: white;
@@ -47,7 +89,8 @@ body { background:none !important; line-height: 1.5em; }
 /* ===== USERMESSAGE ===== */
 #log .message {
   position: relative;
-  margin-top: 15px; /* Adjust margin to make space for the username box */
+  margin-top: 25px; /* Adjust margin to make space for the username box */
+  animation: slideInOut 35s ease-in-out forwards; /* Slide in, stay for 30 seconds, slide out */
 }
 #log .message .container-message {
   color: #66278e;
@@ -58,7 +101,7 @@ body { background:none !important; line-height: 1.5em; }
   border-radius: 0 10px 10px 10px;
   display: inline-block;
   font-family: Lemon;
-  font-size: 28px;
+  font-size: 25px;
   word-break: break-word;
   position: relative;
   box-sizing: border-box;
