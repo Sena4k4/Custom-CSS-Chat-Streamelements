@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Chat</title>
+    <link rel="stylesheet" href="path/to/your/custom.css">
+    <script src="https://cdn.jsdelivr.net/npm/comfy.js@latest/dist/comfy.min.js"></script>
+</head>
+<body>
+    <div id="log">
+        <ul id="chat"></ul>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            var chat = document.querySelector("#chat");
+            const maxMessages = 4;
+
+            ComfyJS.onChat = (user, message, flags, self, extra) => {
+                // Check if there are already maxMessages
+                if (chat.children.length >= maxMessages) {
+                    // Slide out the oldest message
+                    chat.children[0].style.animation = "slideOutFast 2s ease-in-out forwards";
+                    setTimeout(() => {
+                        chat.children[0].remove();
+                    }, 2000); // Remove the message after the slide-out animation
+                }
+
+                // Create a new chat message element
+                var newMessage = document.createElement("li");
+                newMessage.classList.add('message');
+                newMessage.innerHTML = `
+                    <div class="meta">
+                        <span class="name">${user}</span>
+                    </div>
+                    <div class="container-message">
+                        ${message}
+                    </div>`;
+                chat.append(newMessage);
+            };
+
+            ComfyJS.Init("sena_ink");
+        });
+    </script>
+</body>
+</html>
+
